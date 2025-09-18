@@ -281,11 +281,12 @@ void CCharacter::FireWeapon()
 		return;
 	}
 
-	char aBuf[256];
-	str_format(aBuf, sizeof(aBuf), "Direction: x=%.3f, y=%.3f", Direction.x, Direction.y);
-	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "debug", aBuf);
-
 	vec2 perpendicular = vec2(-Direction.y, Direction.x);
+
+	// Adjust X direction if looking right
+	if (Direction.x > 0)
+		perpendicular = -perpendicular;
+
 	vec2 ProjStartPos = m_Pos + Direction * GetProximityRadius() * 0.75f + perpendicular * 5.0f;
 
 	if (Config()->m_Debug)
